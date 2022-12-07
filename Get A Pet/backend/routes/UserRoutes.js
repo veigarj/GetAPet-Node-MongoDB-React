@@ -1,5 +1,4 @@
 const router = require('express').Router();
-
 const UserController = require('../controllers/UserController');
 
 // middlewares
@@ -11,7 +10,7 @@ router.post('/login', UserController.login);
 router.get('/checkuser', UserController.checkUser);
 // pegar user pelo id
 router.get('/:id', UserController.getUserById);
-// Edit user
+// Edit user (patch rota de atualização)
 router.patch('/edit/:id', verifyToken, UserController.editUser);
 
 module.exports = router;

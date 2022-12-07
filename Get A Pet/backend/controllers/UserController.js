@@ -6,7 +6,9 @@ const jwt = require('jsonwebtoken');
 // helpers
 const createUserToken = require('../helpers/create-user-token');
 const getToken = require('../helpers/get-token');
+const getUserByToken = require('../helpers/get-user-by-token');
 
+// function register ----------------------------------------------------
 module.exports = class UserController {
   static async register(req, res) {
     // com destructuri da requisição
@@ -33,6 +35,7 @@ module.exports = class UserController {
       res.status(422).json({ message: 'A confirmação de senha é obrigatoria' });
       return;
     }
+    // check if Password e confirmPassword
     if (password !== confirmpassword) {
       res.status(422).json({
         message: 'A senha e a confirmação de senha precisam ser iguais',
@@ -40,7 +43,7 @@ module.exports = class UserController {
       return;
     }
 
-    // check if user exists
+    // check if user exists = verifica se user ja exist via email
     const userExists = await User.findOne({ email: email });
 
     if (!userExists) {
@@ -50,7 +53,7 @@ module.exports = class UserController {
       return;
     }
 
-    // Create a password
+    // Create password
     const salt = await bcrypt.genSalt(12);
     const passwordHash = await bcrypt.hash(password, salt);
 
@@ -88,7 +91,7 @@ module.exports = class UserController {
 
     if (!user) {
       res.status(422).json({
-        message: 'não há usuario cadastrado com este e-mail!S',
+        message: 'não há usuario cadastrado com este e-mail!',
       });
       return;
     }
@@ -106,7 +109,7 @@ module.exports = class UserController {
     await createUserToken(user, req, res);
   }
 
-  // Retorna User Logado
+  // function Verify User Logado token-------------------------------------
   static async checkUser(req, res) {
     let currentUser;
 
@@ -125,7 +128,7 @@ module.exports = class UserController {
     res.status(200).send(currentUser);
   }
 
-  // pegar user individual pelo id
+  // pegar user pelo id --------------------------------------------
   static async getUserById(req, res) {
     // pegar o params id
     const id = req.params.id;
@@ -142,10 +145,44 @@ module.exports = class UserController {
     res.status(200).json({ user });
   }
 
+  // Function editUser ------------------------------------------------
   static async editUser(req, res) {
-    res.status(200).json({
-      message: 'Deu certo o update!',
-    });
-    return;
+    const id = req.params.id;
+
+    // check if user exist
+    const token = getToken(req);
+    const user = getUserByToken(token);
+
+    const { name, phone, password, confirmpassword } = req.body;
+
+    let image = '';
+
+    // validations
+    if (!name) {
+      res.status(422).json({ message: 'O nome é obrigatório!' });
+      return;
+    }
+
+    user.name = name;
+
+    if (!email) {
+      res.status(422).json({ message: 'O e-mail é obrigatório!' });
+      return;
+    }
+
+    // check if email has already taken
+    const userExists = await User.findOne({ email: email });
+
+    if (user.email !== email && userExists) {
+      res.status(422).json({ message: 'Por favor, utilize outro e-mail!' });
+      return;
+    }
+
+    if (!user) {
+      res.status(422).json({
+        message: 'Usuario não encontrado!',
+      });
+      return;
+    }
   }
 };

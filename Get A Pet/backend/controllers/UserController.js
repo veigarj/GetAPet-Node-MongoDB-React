@@ -147,15 +147,17 @@ module.exports = class UserController {
 
   // Function editUser ------------------------------------------------
   static async editUser(req, res) {
-    const id = req.params.id;
-
-    // check if user exist
     const token = getToken(req);
-    const user = getUserByToken(token);
 
-    const { name, phone, password, confirmpassword } = req.body;
+    const user = await getUserByToken(token);
+
+    const { name, email, phone, password, confirmpassword } = req.body;
 
     let image = '';
+
+    if (req.file) {
+      user.image = req.file.filename;
+    }
 
     // validations
     if (!name) {
@@ -170,7 +172,7 @@ module.exports = class UserController {
       return;
     }
 
-    // check if email has already taken
+    // check if user exists
     const userExists = await User.findOne({ email: email });
 
     if (user.email !== email && userExists) {
@@ -178,11 +180,48 @@ module.exports = class UserController {
       return;
     }
 
-    if (!user) {
-      res.status(422).json({
-        message: 'Usuario não encontrado!',
-      });
+    user.email = email;
+
+    if (image) {
+      const imageName = req.file.filename;
+      user.image = imageName;
+    }
+
+    if (!phone) {
+      res.status(422).json({ message: 'O telefone é obrigatório!' });
       return;
+    }
+
+    user.phone = phone;
+
+    // check if password match
+    if (password != confirmpassword) {
+      res.status(422).json({ error: 'As senhas não conferem.' });
+
+      // change password
+    } else if (password == confirmpassword && password != null) {
+      // creating password
+      const salt = await bcrypt.genSalt(12);
+      const reqPassword = req.body.password;
+
+      const passwordHash = await bcrypt.hash(reqPassword, salt);
+
+      user.password = passwordHash;
+    }
+
+    try {
+      // returns updated data
+      const updatedUser = await User.findOneAndUpdate(
+        { _id: user._id },
+        { $set: user },
+        { new: true }
+      );
+      res.json({
+        message: 'Usuário atualizado com sucesso!',
+        data: updatedUser,
+      });
+    } catch (error) {
+      res.status(500).json({ message: error });
     }
   }
 };

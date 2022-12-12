@@ -46,7 +46,7 @@ module.exports = class UserController {
     // check if user exists = verifica se user ja exist via email
     const userExists = await User.findOne({ email: email });
 
-    if (!userExists) {
+    if (userExists) {
       res.status(422).json({
         message: 'Por favor, utilize outro e-mail',
       });

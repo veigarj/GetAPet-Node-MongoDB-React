@@ -13,9 +13,9 @@ module.exports = class PetController {
     // Deixar disponivel
     const available = true;
 
+    // images upload
     const images = req.files;
 
-    // images upload
 
     // validations
     if (!name) {

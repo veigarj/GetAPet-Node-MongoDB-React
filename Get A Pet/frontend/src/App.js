@@ -12,7 +12,7 @@ import Home from './components/pages/Home';
 import Register from './components/pages/Auth/Register';
 import Profile from './components/pages/User/Profile';
 import MyPets from './components/pages/Pet/MyPets';
-import AddPet from './components/pages/Pet/AddPet';
+import AddPet from '../src/components/pages/Pet/AddPet';
 
 // context
 import { UserProvider } from './components/context/UserContext';

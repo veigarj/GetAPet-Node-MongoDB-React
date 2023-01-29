@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from './AddPet.module.css';
 
 const AddPet = () => {
   return (

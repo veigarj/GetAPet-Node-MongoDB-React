@@ -9,7 +9,7 @@ const { imageUpload } = require('../helpers/image-upload');
 router.post('/register', UserController.register);
 router.post('/login', UserController.login);
 router.get('/checkuser', UserController.checkUser);
-// pegar user pelo id
+// user pelo id
 router.get('/:id', UserController.getUserById);
 // Edit user (patch rota de atualização)
 router.patch(

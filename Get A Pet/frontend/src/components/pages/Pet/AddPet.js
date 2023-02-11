@@ -51,7 +51,7 @@ const AddPet = () => {
     setFlashMessage(data.message, msgType);
 
     if (msgType !== 'erro') {
-      history('/pets/mypets');
+      history('/pet/mypets');
     }
   }
   return (

@@ -11,7 +11,7 @@
   color: #fff;
   border: none;
   min-width: 100px;
-  min-height: 2.5em;
+  min-height: 2.5rem;
   width: 100%;
   cursor: pointer;
   font-size: 1.1em;
@@ -29,4 +29,17 @@
 .form_container p a {
   color: #16479d;
   font-weight: bold;
+}
+
+/* form de pets */
+.preview_pet_images {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1em;
+}
+
+.preview_pet_images img {
+  width: 100px;
+  height: 100px;
+  margin-left: 1em;
 }

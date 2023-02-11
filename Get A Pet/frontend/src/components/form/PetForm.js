@@ -1,17 +1,17 @@
 import { useState } from 'react';
-import React from 'react';
 
 import formStyles from './Form.module.css';
 
 import Input from './Input';
 import Select from './Select';
 
-const PetForm = ({ handleSubmit, petData, btnText }) => {
+function PetForm({ handleSubmit, petData, btnText }) {
   const [pet, setPet] = useState(petData || {});
   const [preview, setPreview] = useState([]);
-  const colors = ['Branco', 'Preto', 'Cinza', 'Caramelo', 'Mesclado'];
+  const colors = ['Branco', 'Preto', 'Cinza', 'Caramelo'];
 
   function onFileChange(e) {
+    console.log(Array.from(e.target.files));
     setPreview(Array.from(e.target.files));
     setPet({ ...pet, images: [...e.target.files] });
   }
@@ -21,7 +21,10 @@ const PetForm = ({ handleSubmit, petData, btnText }) => {
   }
 
   function handleColor(e) {
-    setPet({ ...pet, color: e.target.options[e.target.selectedIndex].text });
+    setPet({
+      ...pet,
+      color: e.target.options[e.target.selectedIndex].text,
+    });
   }
 
   const submit = (e) => {
@@ -31,11 +34,11 @@ const PetForm = ({ handleSubmit, petData, btnText }) => {
 
   return (
     <form onSubmit={submit} className={formStyles.form_container}>
-      <div className={formStyles.preview_pet_imagens}>
+      <div className={formStyles.preview_pet_images}>
         {preview.length > 0
           ? preview.map((image, index) => (
               <img
-                src={URL.createObjectURL(index)}
+                src={URL.createObjectURL(image)}
                 alt={pet.name}
                 key={`${pet.name}+${index}`}
               />
@@ -52,11 +55,10 @@ const PetForm = ({ handleSubmit, petData, btnText }) => {
       <Input
         text="Imagens do Pet"
         type="file"
-        name="Images"
+        name="images"
         handleOnChange={onFileChange}
         multiple={true}
       />
-
       <Input
         text="Nome do Pet"
         type="text"
@@ -67,7 +69,7 @@ const PetForm = ({ handleSubmit, petData, btnText }) => {
       />
       <Input
         text="Idade do Pet"
-        type="text"
+        type="number"
         name="age"
         placeholder="Digite a idade"
         handleOnChange={handleChange}
@@ -77,14 +79,13 @@ const PetForm = ({ handleSubmit, petData, btnText }) => {
         text="Peso do Pet"
         type="number"
         name="weight"
-        placeholder="Digite o peso"
-        handleOnChange={handleChange}
+        placeholder="Digite o peso aproximado"
         value={pet.weight || ''}
+        handleOnChange={handleChange}
       />
-      {/* campo select colors */}
       <Select
         name="color"
-        text="Selecione a cor"
+        text="Selecione a categoria"
         options={colors}
         handleOnChange={handleColor}
         value={pet.color || ''}
@@ -92,6 +93,6 @@ const PetForm = ({ handleSubmit, petData, btnText }) => {
       <input type="submit" value={btnText} />
     </form>
   );
-};
+}
 
 export default PetForm;

@@ -6,7 +6,7 @@ import formStyles from './Form.module.css';
 import Input from './Input';
 import Select from './Select';
 
-const PetForm = ({ hadleSubmit, petData, btnText }) => {
+const PetForm = ({ handleSubmit, petData, btnText }) => {
   const [pet, setPet] = useState(petData || {});
   const [preview, setPreview] = useState([]);
   const colors = ['Branco', 'Preto', 'Cinza', 'Caramelo', 'Mesclado'];
@@ -24,10 +24,10 @@ const PetForm = ({ hadleSubmit, petData, btnText }) => {
     setPet({ ...pet, color: e.target.options[e.target.selectedIndex].text });
   }
 
-  function submit(e) {
+  const submit = (e) => {
     e.preventDefault();
     handleSubmit(pet);
-  }
+  };
 
   return (
     <form onSubmit={submit} className={formStyles.form_container}>

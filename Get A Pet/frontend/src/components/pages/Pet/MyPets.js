@@ -37,7 +37,7 @@ function MyPets() {
         },
       })
       .then((response) => {
-        const updatedPets = pets.filter((pet) => pet._id != id);
+        const updatedPets = pets.filter((pet) => pet._id !== id);
         setPets(updatedPets);
         return response.data;
       })
@@ -77,6 +77,7 @@ function MyPets() {
         <h1>Meus Pets Cadastrados</h1>
         <Link to="/pet/add">Cadastrar Pet</Link>
       </div>
+      {/* cria cada elemento de pats */}
       <div className={styles.petslist_container}>
         {pets.length > 0 &&
           pets.map((pet) => (

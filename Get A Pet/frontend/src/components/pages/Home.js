@@ -8,6 +8,7 @@ import styles from './Home.module.css';
 function Home() {
   const [pets, setPets] = useState([]);
 
+  // não precisa estar logado
   useEffect(() => {
     api.get('/pets').then((response) => {
       setPets(response.data.pets);

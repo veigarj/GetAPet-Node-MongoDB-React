@@ -21,6 +21,7 @@ function Home() {
         <h1>Adote um Pet</h1>
         <p>Veja os detalhes de cada um e conheça o tutor deles</p>
       </div>
+      {/* loop em todos os pets */}
       <div className={styles.pet_container}>
         {pets.length > 0 &&
           pets.map((pet) => (

@@ -6,9 +6,11 @@ import { useState, useEffect } from 'react';
 import styles from './Home.module.css';
 
 function Home() {
+  // cria uma variavel de pets e começa com um objeto vazio []
   const [pets, setPets] = useState([]);
 
-  // não precisa estar logado
+  // não precisa estar logado para ver
+  // faz um GET da api e chama todos os pets
   useEffect(() => {
     api.get('/pets').then((response) => {
       setPets(response.data.pets);
@@ -23,6 +25,7 @@ function Home() {
       </div>
       {/* loop em todos os pets */}
       <div className={styles.pet_container}>
+        {/* renderiza alguma coisa */}
         {pets.length > 0 &&
           pets.map((pet) => (
             <div className={styles.pet_card} key={pet._id}>
@@ -36,6 +39,7 @@ function Home() {
               <p>
                 <span className="bold">Peso:</span> {pet.weight}kg
               </p>
+              {/* cria uma logica caso o pet ja foi adotado */}
               {pet.available ? (
                 <Link to={`/pet/${pet._id}`}>Mais detalhes</Link>
               ) : (

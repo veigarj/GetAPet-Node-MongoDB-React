@@ -72,6 +72,7 @@ module.exports = class PetController {
     });
 
     try {
+      // save pet
       const newPet = await pet.save();
 
       res.status(201).json({

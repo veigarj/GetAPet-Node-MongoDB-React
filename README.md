@@ -21,6 +21,17 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 - Flash Message
 - Git e Github
 
+- Dependencias
+    bcrypt
+    cookie-parser
+    cors
+    dotenv
+    express
+    jsonwebtoken
+    mongoose
+    multer
+    nodemon
+
 
 **O que aprendemos nesse projeto:**
 
